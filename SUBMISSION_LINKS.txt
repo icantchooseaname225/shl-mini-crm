@@ -1,0 +1,6 @@
+Project name: Mini CRM Dashboard
+Live website: Not deployed (no verified public URL yet)
+GitHub repository: Not created (no verified repository URL yet)
+Hosting platform: Netlify (configured in the project; site not deployed)
+Database: Supabase PostgreSQL (Free project created; schema and seven fictional sample leads verified)
+Deployment status: Local source and database prepared; GitHub publication, Netlify sign-in, environment variables, deploy, and public-site verification remain incomplete
