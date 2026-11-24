@@ -13,4 +13,4 @@ When I first ran the function through Netlify Dev, its current runtime passed a 
 
 I created a Supabase Free project, applied the schema, and checked that the seven sample rows and the RLS setting were present. I also checked the project with Supabase's security advisor and tightened the trigger function's search path.
 
-The GitHub repository is now public and the finished `main` branch has been pushed. I created the Netlify project and set its Supabase URL. The Netlify connector does not expose a Git import or deploy action, and its browser dashboard is signed out. The Supabase connector exposes the project URL and publishable keys, but not the server-only secret key. To finish deployment, connect the repo in Netlify, add `SUPABASE_SECRET_KEY` there, and deploy.
+The public GitHub repository is connected to Netlify's `main` branch and is live at https://shl-mini-crm-y9lc.netlify.app. The first build was blocked when Netlify's secret scanner matched the public Supabase project URL in `DATABASE_SETUP.txt`. I removed that literal URL and pushed the fix; the production deploy for commit 5713886 is ready.

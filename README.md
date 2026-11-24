@@ -103,17 +103,11 @@ The schema and fictional sample rows are in `database/schema.sql` and `database/
 
 ## Deployment
 
-The public GitHub repository is [icantchooseaname225/shl-mini-crm](https://github.com/icantchooseaname225/shl-mini-crm). Its `main` branch contains the finished source. A Netlify project has also been created at [app.netlify.com/projects/shl-mini-crm](https://app.netlify.com/projects/shl-mini-crm), but it is not connected to GitHub or deployed yet.
+The public GitHub repository is [icantchooseaname225/shl-mini-crm](https://github.com/icantchooseaname225/shl-mini-crm). Netlify is connected to its `main` branch, and the live site is [shl-mini-crm-y9lc.netlify.app](https://shl-mini-crm-y9lc.netlify.app). The checked-in `netlify.toml` sets the build command to `pnpm build`, the publish folder to `dist`, and the Functions folder to `netlify/functions`.
 
-To finish the deployment:
+The Netlify project has `SUPABASE_URL` and `SUPABASE_SECRET_KEY` configured. Keep the server-only key marked secret in Netlify; the function reads it from the environment and it must not use a `VITE_` prefix or appear in GitHub. If you change an environment variable, trigger a fresh deploy for the new value to take effect. See [Netlify's environment variable guide](https://docs.netlify.com/build/environment-variables/get-started/) and [SUBMISSION_LINKS.txt](SUBMISSION_LINKS.txt) for current deployment details.
 
-1. In Netlify, open the project and connect the GitHub repository `icantchooseaname225/shl-mini-crm` to the `main` branch. The checked-in `netlify.toml` sets the build command to `pnpm build`, the publish folder to `dist`, and the Functions folder to `netlify/functions`.
-2. In **Project configuration → Environment variables**, add `SUPABASE_SECRET_KEY` with the Supabase server-only secret key. `SUPABASE_URL` is already set on the Netlify project. Keep the secret out of GitHub and do not use a `VITE_` prefix.
-3. Deploy or trigger a fresh deploy after adding the key. Open the generated Netlify URL and check that the seven sample leads load and that add, edit, status, and delete actions work.
-
-Netlify stores environment variables outside the repository, and a new deploy is needed for changed values to take effect. See [Netlify's environment variable guide](https://docs.netlify.com/build/environment-variables/get-started/) and [GitHub's guide to adding a local project](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github).
-
-Current deployment status: the Supabase Free project has been created and seeded, and the source has been pushed to GitHub. Netlify has an empty project with `SUPABASE_URL` configured; the Git connection, server-only key, deploy, and public-site check remain. See [SUBMISSION_LINKS.txt](SUBMISSION_LINKS.txt) for the verified status.
+The first deploy was blocked because Netlify's secret scanner matched the public project URL written in `DATABASE_SETUP.txt`. I removed the literal URL and pushed the fix; the production deploy for commit `5713886` is ready.
 
 ## Known limitations
 
