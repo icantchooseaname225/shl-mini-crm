@@ -3,7 +3,7 @@ MINI CRM DASHBOARD — DATABASE SETUP
 
 This project stores leads in Supabase PostgreSQL. The browser talks to a Netlify Function; it does not connect to the database directly. Keep the server-only secret key on the server and never paste it into frontend code, screenshots, GitHub, or this document.
 
-For this submission, I created a Free Supabase project named shl-mini-crm in the Mumbai region. Its project URL is https://ymclbybmklolmzwjwvft.supabase.co. The schema and seven fictional seed rows have already been applied there. The steps below explain how to recreate the database if needed.
+For this submission, I created a Free Supabase project named shl-mini-crm in the Mumbai region. The schema and seven fictional seed rows have already been applied there. The project's URL is available in Supabase under Project Settings > API Keys; it is omitted from this file so Netlify's secrets scanner does not mistake it for a leaked environment value. The steps below explain how to recreate the database if needed.
 
 1. Create a Supabase account
 ----------------------------
