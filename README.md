@@ -15,13 +15,11 @@ I built this project to keep track of business enquiries in one place. It is a s
 ## Technologies
 
 - **React and Vite** keep the frontend small and give me a quick local build.
-- **Tailwind CSS 4** is included through its Vite plugin; the dashboard's component styling is kept in one readable CSS file.
+- **Plain CSS** keeps the layout responsive without adding utility classes to the JSX, which makes the small project easier to read and adjust.
 - **Lucide React** provides the small set of interface icons.
 - **Netlify Functions** provide the server-side CRUD API.
 - **Supabase PostgreSQL** stores leads. The database schema enables row-level security and has no public policies. Only the server function uses the secret key; no key is sent to the browser.
 - **Netlify** can host the static site and its function from the same project, so the frontend uses a same-origin `/api/leads` endpoint.
-
-The current published plan details were checked on 23 November 2026. Supabase Free includes 500 MB of database storage and can pause projects after a week of inactivity. Netlify Free currently has a 300-credit monthly limit. These limits are suitable for a small demonstration, but the app may need attention if a free project pauses or usage grows. See [Supabase pricing](https://supabase.com/pricing) and [Netlify pricing](https://www.netlify.com/pricing/).
 
 Supabase is moving from its legacy `service_role` key to a newer server-only secret key. This project accepts the new `sb_secret_...` key and sends it only in the `apikey` header. It also supports the legacy service-role key for existing projects. See [Supabase's API key migration guide](https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys).
 
@@ -40,7 +38,7 @@ database/seed.sql             Seven fictional demonstration leads
 
 ## Run it locally
 
-You need Node.js 20 or newer and pnpm. The Netlify CLI is included as a development dependency so the local site can run the Functions API too.
+Use Node.js 24 and pnpm 11.25.0. The versions are pinned for Netlify in `.nvmrc` and `package.json`. The Netlify CLI is included as a development dependency so the local site can run the Functions API too.
 
 1. Install dependencies:
 
@@ -97,13 +95,30 @@ The browser uses the same-origin API at `/api/leads`. Netlify rewrites that path
 
 The function validates required fields, email shape, phone digit count, field lengths, UUIDs, and the three allowed statuses. Database errors return a clear message without exposing raw database details.
 
+I used regular CSS instead of a utility-class framework because the UI is small enough to style directly. The component structure and CSS rules are easier to follow together, and the project has fewer build dependencies.
+
 ## Database and sample data
 
 The schema and fictional sample rows are in `database/schema.sql` and `database/seed.sql`. Follow [DATABASE_SETUP.txt](DATABASE_SETUP.txt) to create a project and apply both files.
 
 ## Deployment
 
-The repository is configured for Netlify with `netlify.toml`. A connected Netlify site can build from the `main` branch with `pnpm build`, publish `dist`, and deploy functions from `netlify/functions`. Add the two server-side environment variables in Netlify's site settings before deploying.
+The project is ready to deploy from GitHub:
+
+1. Create a **public** GitHub repository named `shl-mini-crm`. Leave the README, `.gitignore`, and license options unchecked; they already exist in this project.
+2. From this project's folder in PowerShell, connect the local repository and push it:
+
+   ```powershell
+   git remote add origin https://github.com/icantchooseaname225/shl-mini-crm.git
+   git push -u origin main
+   ```
+
+   If `origin` already exists, use `git remote set-url origin https://github.com/icantchooseaname225/shl-mini-crm.git` first.
+3. In Netlify, choose **Add new project → Import an existing project**, connect GitHub, and select `shl-mini-crm`. The checked-in `netlify.toml` sets the build command to `pnpm build`, the publish folder to `dist`, and the Functions folder to `netlify/functions`.
+4. In the site's **Project configuration → Environment variables**, add `SUPABASE_URL` with the project URL and `SUPABASE_SECRET_KEY` with the Supabase server-only secret key. Keep the key out of GitHub and do not use a `VITE_` prefix.
+5. Deploy or trigger a fresh deploy after adding the variables. Open the generated Netlify URL and check that the seven sample leads load and that add, edit, status, and delete actions work.
+
+Netlify stores environment variables outside the repository, and a new deploy is needed for changed values to take effect. See [Netlify's environment variable guide](https://docs.netlify.com/build/environment-variables/get-started/) and [GitHub's guide to adding a local project](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github).
 
 Current deployment status: the Supabase Free project has been created and seeded. The source is prepared locally, but no verified public Netlify URL or GitHub repository has been created for this copy yet. See [SUBMISSION_LINKS.txt](SUBMISSION_LINKS.txt) for the verified status.
 

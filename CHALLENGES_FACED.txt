@@ -3,6 +3,8 @@ CHALLENGES FACED
 
 I kept the project focused on the lead fields and actions from the task. One small setup issue was that the development environment included Node.js but did not expose npm as a command. I found the bundled pnpm package and used it to install dependencies, so I could keep the project in the existing workspace. One optional Netlify CLI dependency could not compile because Python for node-gyp was missing; it was not needed for this app, and the local function server, tests, and production build still ran.
 
+As I simplified the project, I noticed Tailwind's build plugin was installed even though the dashboard used only regular CSS classes. I removed that unused dependency and kept the styles in one readable stylesheet.
+
 I also needed to keep the database key away from the frontend. I made the browser call a same-origin /api/leads path and put all database operations in a Netlify Function. The Supabase server key is read only by that function, and the SQL schema enables row-level security without adding public policies. I used Supabase's newer secret key format and kept support for the legacy service_role key for compatibility.
 
 For form validation, I added the same basic checks in the browser and the API. This helps users get quick feedback while ensuring the backend also rejects incomplete or invalid requests. I used a responsive desktop table and mobile lead cards so the contact details remain readable on smaller screens.
@@ -11,4 +13,4 @@ When I first ran the function through Netlify Dev, its current runtime passed a 
 
 I created a Supabase Free project, applied the schema, and checked that the seven sample rows and the RLS setting were present. I also checked the project with Supabase's security advisor and tightened the trigger function's search path.
 
-The browser sessions for GitHub and Netlify were signed out. That meant I couldn't create the public repository, add the Netlify environment variables, or verify a public deployment. I left those details marked as incomplete instead of inventing URLs. The Netlify configuration and setup guide are ready for the account sign-in step.
+The GitHub connection can read the account and its repositories, but it does not provide a create-repository action. Opening GitHub's new-repository page in the browser redirects to sign-in, so I left the repository and public URL blank instead of guessing. The README now has the commands to publish this local Git repository and the steps to connect it to Netlify. Netlify still needs the account sign-in, Supabase environment variables, and first deploy.

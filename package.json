@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "packageManager": "pnpm@11.25.0",
   "scripts": {
     "dev": "netlify dev",
     "dev:web": "vite",
@@ -16,10 +17,8 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.13",
     "@vitejs/plugin-react": "^4.7.0",
     "netlify-cli": "^23.9.0",
-    "tailwindcss": "^4.1.13",
     "vite": "^6.3.5"
   }
 }
