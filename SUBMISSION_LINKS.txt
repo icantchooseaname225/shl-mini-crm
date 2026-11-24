@@ -1,6 +1,7 @@
 Project name: Mini CRM Dashboard
-Live website: Not deployed (no verified public URL yet)
-GitHub repository: Not created (the GitHub connector can read existing repositories but cannot create one; browser sign-in is required)
-Hosting platform: Netlify (configured in the project; site not deployed)
+Live website: Not deployed (Netlify project exists; no published URL to verify yet)
+GitHub repository: https://github.com/icantchooseaname225/shl-mini-crm
+Netlify project: https://app.netlify.com/projects/shl-mini-crm (created, not connected or deployed)
+Hosting platform: Netlify
 Database: Supabase PostgreSQL (Free project created; schema and seven fictional sample leads verified)
-Deployment status: Local source and database prepared; create a public GitHub repository, push `main`, import it into Netlify, add `SUPABASE_URL` and `SUPABASE_SECRET_KEY`, and deploy. Step-by-step instructions are in `README.md`.
+Deployment status: Source is pushed to GitHub. Netlify project has `SUPABASE_URL`; still connect the repo, add `SUPABASE_SECRET_KEY`, deploy, and verify the live site. Step-by-step instructions are in `README.md`.
