@@ -1,58 +1,78 @@
 MINI CRM DASHBOARD — DATABASE SETUP
 ===================================
 
-This project stores leads in Supabase PostgreSQL. The browser talks to a Netlify Function; it does not connect to the database directly. Keep the server-only secret key on the server and never paste it into frontend code, screenshots, GitHub, or this document.
+I wrote this guide for someone setting up the database for the first time. The live website already uses a Supabase project with seven fictional leads. You do not need to follow this guide just to view or submit the live website.
 
-For this submission, I created a Free Supabase project named shl-mini-crm in the Mumbai region. The schema and seven fictional seed rows have already been applied there. The project's URL is available in Supabase under Project Settings > API Keys; it is omitted from this file so Netlify's secrets scanner does not mistake it for a leaked environment value. The steps below explain how to recreate the database if needed.
+If you want to create a separate database of your own, follow these steps.
 
 1. Create a Supabase account
 ----------------------------
-Visit https://supabase.com and choose the free sign-up option. Follow Supabase's account setup. The Free plan is enough for this small demonstration, but free projects may pause after a week without activity.
+
+Go to https://supabase.com and create a free account. Follow the instructions on the site to verify your email and sign in.
 
 2. Create a project
 -------------------
-In the Supabase dashboard, create a new project. Choose an organization, give the project a name such as "shl-mini-crm", choose a nearby region, and create a strong database password. Save that password somewhere private; you do not need to put it in this app's files. Wait for the database to finish provisioning.
+
+In the Supabase dashboard, choose New project. Pick an organization, name the project shl-mini-crm, select a nearby region, and create a strong database password. Save the password somewhere private. Wait for Supabase to finish setting up the project.
 
 3. Find the project URL and server key
 --------------------------------------
-Open the project dashboard and go to Project Settings > API Keys. In the "Publishable and secret API keys" area, create a secret key if one is not already listed. Supabase recommends this newer key for backend code.
+
+Open the project, then go to Project Settings → API Keys.
 
 - Copy the Project URL. It looks like https://your-project-id.supabase.co.
-- Copy the secret key. It starts with `sb_secret_` and is sensitive. Use it only in the Netlify Function; do not use the publishable/anon key for this server-side integration.
-- Older Supabase projects may still have a legacy `service_role` key. This project accepts that key too, using the `SUPABASE_SERVICE_ROLE_KEY` variable. If both variables are present, `SUPABASE_SECRET_KEY` takes precedence.
+- In the Secret keys section, create or copy a key that starts with sb_secret_. This key is private and is only for server code.
+- Do not use the Publishable key or the old anon key as the server key.
+- Older Supabase projects may have a legacy service_role key. This project supports it under the name SUPABASE_SERVICE_ROLE_KEY, but the newer secret key is preferred.
 
-Keep both values private. Supabase's new secret key must be sent with the `apikey` header only; the app handles this automatically. See [Supabase's API key migration guide](https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys) for details.
+Do not put a real key in this guide, GitHub, or the browser. The app sends the secret key to Supabase from the Netlify Function. More detail is in Supabase's API key guide: https://supabase.com/docs/guides/getting-started/api-keys.
 
 4. Create the leads table
 -------------------------
-In the Supabase project, open SQL Editor and create a new query. Open this project's database/schema.sql, copy the whole file into the editor, and run it. It creates the leads table, allowed-status constraint, updated_at trigger, index, and row-level security setting. The schema does not add public access policies.
 
-5. Add fictional sample leads
------------------------------
-Create another SQL Editor query. Copy all of database/seed.sql into it and run it once. It inserts seven fictional leads in New, Contacted, and Converted statuses. The email addresses use the reserved .test domain.
+In Supabase, open SQL Editor and start a new query. In the GitHub repository, open database/schema.sql, copy the file contents, paste them into the SQL Editor, and run the query.
 
-6. Configure local development
-------------------------------
-Copy .env.example to a file named .env in the project root. Replace the two placeholder values:
+This creates the leads table, limits status to New, Contacted, or Converted, updates the updated_at field when a row changes, and turns on row-level security. The file does not add public database policies.
 
-SUPABASE_URL=https://your-project-id.supabase.co
-SUPABASE_SECRET_KEY=your-real-server-secret-key
-
-Do not add quotes unless your shell or deployment provider requires them. The .env file is ignored by Git. Start the app with pnpm dev; Netlify Dev reads the server variables and starts both the frontend and function locally.
-
-7. Configure Netlify
---------------------
-After importing the GitHub repository into Netlify, open the site's Site configuration (or Project configuration) > Environment variables. Add:
-
-- SUPABASE_URL with the Supabase Project URL.
-- SUPABASE_SECRET_KEY with the server-only `sb_secret_...` key.
-
-For an older project that only has the legacy key, add SUPABASE_SERVICE_ROLE_KEY with its service_role key instead.
-
-Make them available to Functions and production deploys. Save them, then trigger a new deploy so the function can read the variables. Never add these values to a VITE_ variable; VITE_ values are exposed to the browser bundle.
-
-8. Check the connection
+5. Add the sample leads
 -----------------------
-Open the deployed site or run pnpm dev locally. The dashboard should load the seven seeded leads and show counts based on those rows. Add a fictional lead, refresh the page, and confirm it remains. If the page reports a database error, check the project URL, server key, table name, and that both SQL files were run. If the Supabase project has paused, resume it in the Supabase dashboard and try again.
 
-The public demonstration has no authentication. Anyone who can reach the deployed site can use its API to change demonstration records. Keep this project limited to fictional sample data.
+Start another SQL Editor query. Open database/seed.sql in GitHub, copy its contents, paste them into the editor, and run it once. It adds seven fictional leads with different statuses. Their email addresses use the reserved .test domain.
+
+Do not run the seed file a second time on the same database unless you mean to add the sample leads again. The live database is already seeded.
+
+6. Set up the project on your computer
+--------------------------------------
+
+In the project folder, copy .env.example and name the copy .env. Open .env in a text editor and replace the example values:
+
+    SUPABASE_URL=https://your-project-id.supabase.co
+    SUPABASE_SECRET_KEY=your-private-server-key
+
+Use your own project's URL and secret key. Keep .env on your computer; Git ignores it so it should not be uploaded to GitHub. Do not add VITE_ to either variable name because VITE_ values are sent to the browser.
+
+To start the site and API locally, open PowerShell or a terminal in the project folder and run:
+
+    pnpm install
+    pnpm dev
+
+Open the local address printed in the terminal, usually http://localhost:8888. The README has the full beginner run-through.
+
+7. Add the settings to Netlify
+------------------------------
+
+The live project is https://app.netlify.com/projects/shl-mini-crm-y9lc. In Netlify, open the project and choose Manage → Environment variables. Add these names:
+
+- SUPABASE_URL: your Supabase Project URL.
+- SUPABASE_SECRET_KEY: your private Supabase secret key.
+
+Set the values for production and Functions. If you only have the older service_role key, use the name SUPABASE_SERVICE_ROLE_KEY instead. Save the settings and trigger a new deploy.
+
+The live project already has its environment variables. These steps are only needed if you create a new Netlify project or replace a key. Never use a VITE_ name for the secret.
+
+8. Check the database connection
+--------------------------------
+
+Open the website. It should show the seven sample leads and counts based on them. You can also run pnpm dev locally and check the address printed in the terminal. If the leads do not load, check that the project URL and secret key are correct, and that you ran both SQL files.
+
+If Supabase has paused the project, open its dashboard and resume it. The current public demo has no sign-in, so only use fictional sample information. Anyone with the live site can change its demo leads.

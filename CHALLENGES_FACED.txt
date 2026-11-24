@@ -1,16 +1,14 @@
 CHALLENGES FACED
 ================
 
-I kept the project focused on the lead fields and actions from the task. One small setup issue was that the development environment included Node.js but did not expose npm as a command. I found the bundled pnpm package and used it to install dependencies, so I could keep the project in the existing workspace. One optional Netlify CLI dependency could not compile because Python for node-gyp was missing; it was not needed for this app, and the local function server, tests, and production build still ran.
+One small setup problem was that Node.js was available in the workspace, but npm was not available as a command. I used the pnpm package that was already there to install and run the project. An optional Netlify CLI dependency also needed Python to build one of its tools. That part was not needed to run the app, so I kept going with the working setup.
 
-As I simplified the project, I noticed Tailwind's build plugin was installed even though the dashboard used only regular CSS classes. I removed that unused dependency and kept the styles in one readable stylesheet.
+I noticed that the project had a Tailwind build plugin even though the dashboard was using regular CSS. I removed the unused plugin and kept the styles in one stylesheet. That made the project a little simpler to understand and build.
 
-I also needed to keep the database key away from the frontend. I made the browser call a same-origin /api/leads path and put all database operations in a Netlify Function. The Supabase server key is read only by that function, and the SQL schema enables row-level security without adding public policies. I used Supabase's newer secret key format and kept support for the legacy service_role key for compatibility.
+I wanted to keep the database key away from the browser. The page now calls a Netlify Function, and that function talks to Supabase. The database has row-level security turned on and no public policies. I also added the same basic checks in the browser and in the function, so a bad form entry is rejected in both places.
 
-For form validation, I added the same basic checks in the browser and the API. This helps users get quick feedback while ensuring the backend also rejects incomplete or invalid requests. I used a responsive desktop table and mobile lead cards so the contact details remain readable on smaller screens.
+When I first ran the function through Netlify Dev, the runtime sent a standard web request, but one of my tests expected the older Lambda event format. I changed the function so it can handle both formats. After that, the local GET, POST, PATCH, DELETE, and validation checks worked.
 
-When I first ran the function through Netlify Dev, its current runtime passed a Fetch Request object instead of the older Lambda event shape I had used in my unit test. I updated the handler to accept both shapes, and then checked GET, POST, PATCH, DELETE, and invalid input through the local Netlify route.
+The first Netlify deploy was blocked because its secret scanner found the public Supabase project URL written in DATABASE_SETUP.txt. The URL itself is not a secret, but the scanner matched it against the configured environment value. I removed the literal URL from the document and the next deploy succeeded.
 
-I created a Supabase Free project, applied the schema, and checked that the seven sample rows and the RLS setting were present. I also checked the project with Supabase's security advisor and tightened the trigger function's search path.
-
-The public GitHub repository is connected to Netlify's `main` branch and is live at https://shl-mini-crm-y9lc.netlify.app. The first build was blocked when Netlify's secret scanner matched the public Supabase project URL in `DATABASE_SETUP.txt`. I removed the literal URL and the next deployment succeeded. I then checked the live API by creating a temporary fictional lead, editing it and changing its status, and deleting it. The seven original sample leads were still there afterward.
+I also checked the live API with a temporary fictional lead. I added it, changed its business name and status, then deleted it. The seven sample leads were still there after the check. The live site is at https://shl-mini-crm-y9lc.netlify.app, and it deploys from GitHub's main branch.

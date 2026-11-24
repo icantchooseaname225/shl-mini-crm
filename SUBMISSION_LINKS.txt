@@ -1,7 +1,11 @@
 Project name: Mini CRM Dashboard
+
 Live website: https://shl-mini-crm-y9lc.netlify.app
 GitHub repository: https://github.com/icantchooseaname225/shl-mini-crm
-Netlify project: https://app.netlify.com/projects/shl-mini-crm-y9lc (connected to GitHub main)
-Hosting platform: Netlify
-Database: Supabase PostgreSQL (Free project created; schema and seven fictional sample leads verified)
-Deployment status: The public production site is live and connected to GitHub `main`. I verified that the live API returns seven leads and that create, edit/status update, and delete work; the temporary test lead was removed afterward. Netlify deploys automatically on pushes to `main`. See `README.md` for beginner setup steps and the temporary key cleanup date.
+Netlify project: https://app.netlify.com/projects/shl-mini-crm-y9lc
+Hosting platform: Netlify (Free plan)
+Database: Supabase PostgreSQL
+
+Deployment status: The public site is live and connected to the GitHub main branch. Netlify deploys when I push a change to main. I checked that the live API loads seven leads and that adding, editing, changing status, and deleting a temporary fictional lead all worked. The test lead was removed afterward.
+
+For the beginner steps and the temporary key cleanup date, see README.md.
