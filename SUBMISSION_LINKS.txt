@@ -4,4 +4,4 @@ GitHub repository: https://github.com/icantchooseaname225/shl-mini-crm
 Netlify project: https://app.netlify.com/projects/shl-mini-crm-y9lc (connected to GitHub main)
 Hosting platform: Netlify
 Database: Supabase PostgreSQL (Free project created; schema and seven fictional sample leads verified)
-Deployment status: Production deploy for commit 5713886 is ready. The site builds from every push to `main`; Netlify has the Supabase environment variables configured. Step-by-step details are in `README.md`.
+Deployment status: The public production site is live and connected to GitHub `main`. I verified that the live API returns seven leads and that create, edit/status update, and delete work; the temporary test lead was removed afterward. Netlify deploys automatically on pushes to `main`. See `README.md` for beginner setup steps and the temporary key cleanup date.
